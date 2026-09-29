@@ -1,0 +1,255 @@
+@font-face{font-family:'Archivo';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/archivo-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/archivo-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/archivo-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/archivo-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/archivo-latin-800-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:900;font-display:swap;src:url(fonts/archivo-latin-900-normal.woff2) format('woff2')}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:500;font-display:swap;src:url(fonts/fraunces-latin-500-italic.woff2) format('woff2')}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:600;font-display:swap;src:url(fonts/fraunces-latin-600-italic.woff2) format('woff2')}
+
+html,body{margin:0;padding:0;height:100%;background:#061f1d}
+
+/* El componente se pinta a pantalla completa por encima de la página. */
+deck-stage{position:fixed;inset:0;z-index:2147483000}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA HUERTA LAB · Sistema visual de las clases en directo
+   Lienzo 1920×1080. Se proyecta en un directo de YouTube, así que manda
+   la legibilidad a tamaño pequeño: nadie lee un cuerpo de 20 px en un
+   móvil con la señal regular.
+
+   Reglas que vienen de eso:
+     · Cuerpo nunca por debajo de 34 px; titulares de 90 px para arriba.
+     · Poco texto por diapositiva. Lo demás lo dice Iván.
+     · Contraste alto siempre: crema sobre verde bosque, o al revés.
+   ══════════════════════════════════════════════════════════════════════ */
+
+deck-stage{
+  --bosque:#082E27;        /* el fondo de casi todo */
+  --bosque-2:#0d3d33;      /* superficies elevadas sobre el bosque */
+  --bosque-3:#061f1d;      /* el más profundo, para viñetear */
+  --lima:#C9DE3F;          /* el acento. Se usa poco y se nota */
+  --lima-2:#a8bd2a;
+  --coral:#E87B58;         /* la alarma, el dato incómodo */
+  --crema:#F6F4EA;         /* el papel */
+  --crema-2:#e4e0cf;
+  --tinta:#14261f;         /* texto sobre crema */
+  --suave:rgba(246,244,234,.62);
+  --linea:rgba(246,244,234,.16);
+}
+deck-stage,
+deck-stage *{box-sizing:border-box;margin:0;padding:0}
+/* `deck-stage` va nombrado a propósito: el motor declara su propia tipografía
+   en :host y esa le gana a la herencia desde <body>. Sin esto, en local todo
+   salía en la fuente del sistema y en GHL en Archivo, con saltos de línea
+   distintos: se maquetaba contra una fuente que el público no veía. */
+deck-stage{font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+deck-stage>section{
+  background:var(--bosque);
+  color:var(--crema);
+  overflow:hidden;
+}
+deck-stage>section>.d{position:absolute;inset:0;width:100%;height:100%}
+/* La caja donde vive el contenido. 130 px de margen: en un directo, el
+   reproductor recorta los bordes más de lo que uno cree. */
+deck-stage .pad{position:absolute;inset:0;padding:110px 130px;display:flex;flex-direction:column;justify-content:center}
+deck-stage .pad.top{justify-content:flex-start}
+/* Bloque de contenido pegado a la derecha. El texto de dentro sigue
+   alineado a la izquierda: un titular de 132 px en bandera derecha se
+   lee fatal. */
+/* Con align-items basta: cada hijo se encoge a su contenido y se pega a la
+   derecha. Forzarles width:100% reventaba la marca, que está posicionada en
+   absoluto y se iba 130 px fuera del lienzo. */
+deck-stage .pad.der{align-items:flex-end}
+/* Espeja la foto. Los fondos son 16:9 exactos, así que «cover» no deja
+   margen para reencuadrar: si el sujeto cae debajo del titular, la única
+   forma de moverlo al otro tercio sin perder resolución es voltear. */
+deck-stage .foto.espejo{transform:scaleX(-1)}
+/* ── Tipografía ───────────────────────────────────────────────────── */
+deck-stage .eyebrow{
+  font-size:26px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--lima);margin-bottom:34px;
+}
+deck-stage .eyebrow.coral{color:var(--coral)}
+deck-stage h1{font-size:132px;font-weight:800;line-height:.96;letter-spacing:-.035em;text-wrap:balance}
+deck-stage h2{font-size:96px;font-weight:800;line-height:1.02;letter-spacing:-.03em;text-wrap:balance}
+deck-stage h3{font-size:62px;font-weight:700;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+deck-stage h1 em,
+deck-stage h2 em,
+deck-stage h3 em{
+  font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:600;
+  color:var(--lima);
+}
+deck-stage .lead{font-size:42px;line-height:1.42;color:var(--suave);max-width:24ch;margin-top:38px}
+deck-stage .lead.ancho{max-width:34ch}
+deck-stage p.dato{font-size:36px;line-height:1.45;color:var(--suave)}
+deck-stage .fuente{
+  position:absolute;left:130px;bottom:58px;right:130px;
+  font-size:22px;line-height:1.4;color:rgba(246,244,234,.42);
+}
+/* Un dato sin fuente no se proyecta. Lo que Iván no ha cerrado va así. */
+deck-stage .pend{
+  display:inline-block;padding:2px 12px;border-radius:6px;
+  background:#ffe08a;color:#7a2d00;font-weight:800;font-size:.82em;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+}
+/* ── Fondo: las curvas de nivel de la finca ───────────────────────── */
+deck-stage .curvas{position:absolute;inset:0;opacity:.14;pointer-events:none}
+deck-stage .curvas svg{width:100%;height:100%}
+deck-stage .viñeta{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 42%,transparent 40%,rgba(6,31,29,.72))}
+/* ── Foto de fondo ────────────────────────────────────────────────── */
+deck-stage .foto{position:absolute;inset:0;background-size:cover;background-position:center}
+deck-stage .foto.der{background-position:right center}
+deck-stage .velo{position:absolute;inset:0}
+deck-stage .velo.izq{background:linear-gradient(100deg,rgba(8,46,39,.97) 34%,rgba(8,46,39,.72) 58%,rgba(8,46,39,.2))}
+/* El espejo de la anterior: la foto se ve por la izquierda y el texto va
+   a la derecha. Hace falta cuando el sujeto de la foto cae justo debajo
+   del titular y queda tapado. */
+deck-stage .velo.der{background:linear-gradient(260deg,rgba(8,46,39,.97) 34%,rgba(8,46,39,.72) 58%,rgba(8,46,39,.2))}
+deck-stage .velo.abajo{background:linear-gradient(180deg,rgba(8,46,39,.18) 30%,rgba(8,46,39,.88))}
+deck-stage .velo.full{background:rgba(8,46,39,.82)}
+/* ── Marca ────────────────────────────────────────────────────────── */
+deck-stage .marca{position:absolute;left:130px;top:62px;display:flex;align-items:center;gap:20px;z-index:5}
+deck-stage .marca img{height:74px;width:auto;filter:brightness(0) invert(1)}
+deck-stage .marca span{font-size:22px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--suave)}
+deck-stage .paso{position:absolute;right:130px;top:66px;z-index:5;
+  font-size:22px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(246,244,234,.4)}
+/* ── Piezas de datos ──────────────────────────────────────────────── */
+deck-stage .cifra{font-size:190px;font-weight:800;line-height:.88;letter-spacing:-.05em;color:var(--lima)}
+deck-stage .cifra.coral{color:var(--coral)}
+deck-stage .cifra small{display:block;font-size:32px;font-weight:600;letter-spacing:0;color:var(--suave);margin-top:18px;line-height:1.35}
+deck-stage .tarjetas{display:grid;gap:26px;margin-top:52px}
+deck-stage .tarjetas.tres{grid-template-columns:repeat(3,1fr)}
+deck-stage .tarjetas.dos{grid-template-columns:repeat(2,1fr)}
+deck-stage .tarjetas.cuatro{grid-template-columns:repeat(4,1fr);gap:20px}
+deck-stage .tarjetas.cuatro .tarjeta{padding:32px 28px}
+deck-stage .tarjetas.cuatro .tarjeta b{font-size:36px;margin-bottom:12px}
+deck-stage .tarjetas.cuatro .tarjeta span{font-size:26px;line-height:1.4}
+deck-stage .tarjeta{padding:40px;border:1px solid var(--linea);border-radius:20px;background:rgba(246,244,234,.05)}
+deck-stage .tarjeta b{display:block;font-size:46px;font-weight:800;color:var(--lima);margin-bottom:16px;line-height:1.05}
+deck-stage .tarjeta span{font-size:30px;line-height:1.42;color:var(--suave)}
+deck-stage .lista{display:grid;gap:26px;margin-top:46px}
+deck-stage .lista li{list-style:none;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;
+  font-size:40px;line-height:1.36}
+deck-stage .lista li i{width:14px;height:14px;border-radius:50%;background:var(--lima);margin-top:16px;flex:none}
+/* ── Animación al entrar en la diapositiva ────────────────────────────
+   deck-stage pone data-deck-active en la sección activa y lo quita al
+   salir. Colgar de ahí hace que la animación se reproduzca de nuevo
+   cada vez que se vuelve a la diapositiva, no solo la primera. */
+deck-stage [data-anim]{opacity:0}
+/* «traza» solo anima stroke-dashoffset: si además se le aplica el opacity:0
+   de arriba, el trazo nunca aparece. Tiene que quedar visible desde el
+   principio y dejar que sea el guion el que lo dibuje. */
+deck-stage [data-anim="dibuja-x"],
+deck-stage [data-anim="dibuja-y"],
+deck-stage [data-anim="revela"],
+deck-stage [data-anim="traza"]{opacity:1}
+deck-stage [data-anim="dibuja-x"]{transform:scaleX(0);transform-origin:left center}
+deck-stage [data-anim="dibuja-y"]{transform:scaleY(0);transform-origin:bottom center}
+@keyframes lh-sube{from{opacity:0;transform:translateY(34px)} to{opacity:1;transform:none}}
+@keyframes lh-baja{from{opacity:0;transform:translateY(-28px)}to{opacity:1;transform:none}}
+@keyframes lh-izq{from{opacity:0;transform:translateX(-56px)}to{opacity:1;transform:none}}
+@keyframes lh-der{from{opacity:0;transform:translateX(56px)} to{opacity:1;transform:none}}
+@keyframes lh-zoom{from{opacity:0;transform:scale(.93)}       to{opacity:1;transform:none}}
+@keyframes lh-revela{from{clip-path:inset(0 100% 0 0)}          to{clip-path:inset(0 0 0 0)}}
+@keyframes lh-dib-x{from{transform:scaleX(0)}                  to{transform:scaleX(1)}}
+@keyframes lh-dib-y{from{transform:scaleY(0)}                  to{transform:scaleY(1)}}
+@keyframes lh-traza{to{stroke-dashoffset:0}}
+deck-stage [data-deck-active] [data-anim="sube"]{animation:lh-sube   900ms cubic-bezier(.2,.7,.2,1) var(--d,0ms) both}
+deck-stage [data-deck-active] [data-anim="baja"]{animation:lh-baja   900ms cubic-bezier(.2,.7,.2,1) var(--d,0ms) both}
+deck-stage [data-deck-active] [data-anim="izq"]{animation:lh-izq    900ms cubic-bezier(.2,.7,.2,1) var(--d,0ms) both}
+deck-stage [data-deck-active] [data-anim="der"]{animation:lh-der    900ms cubic-bezier(.2,.7,.2,1) var(--d,0ms) both}
+deck-stage [data-deck-active] [data-anim="zoom"]{animation:lh-zoom  1100ms cubic-bezier(.2,.7,.2,1) var(--d,0ms) both}
+deck-stage [data-deck-active] [data-anim="revela"]{animation:lh-revela 1200ms cubic-bezier(.7,0,.2,1) var(--d,0ms) both}
+deck-stage [data-deck-active] [data-anim="dibuja-x"]{animation:lh-dib-x  1000ms cubic-bezier(.7,0,.2,1) var(--d,0ms) both}
+deck-stage [data-deck-active] [data-anim="dibuja-y"]{animation:lh-dib-y  1100ms cubic-bezier(.7,0,.2,1) var(--d,0ms) both}
+deck-stage [data-deck-active] [data-anim="traza"]{animation:lh-traza  1600ms cubic-bezier(.6,0,.3,1) var(--d,0ms) both}
+/* Los latidos decorativos van siempre: dan sensación de directo vivo. */
+@keyframes lh-latido{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.45);opacity:.5}}
+@keyframes lh-onda{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
+@keyframes lh-flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+/* Dentro de un SVG el origen de transformación es la esquina del viewBox,
+   así que un «zoom» se lanza desde ahí en lugar de crecer en su sitio. */
+deck-stage svg [data-anim="zoom"],
+deck-stage svg [data-anim="sube"],
+deck-stage svg [data-anim="izq"],
+deck-stage svg [data-anim="der"]{
+  transform-box:fill-box;transform-origin:center;
+}
+deck-stage .punto{position:relative;display:inline-block;width:14px;height:14px;border-radius:50%;
+  background:var(--coral);animation:lh-latido 2s ease-in-out infinite}
+deck-stage .punto::after{content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:2px solid var(--coral);animation:lh-onda 2s ease-out infinite}
+deck-stage .flota{animation:lh-flota 5s ease-in-out infinite}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   Añadidos de esta clase sobre el sistema de La Huerta LAB.
+   Solo piezas nuevas: nada de lo original se toca.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Lámina: el papel crema donde viven los diagramas dibujados.
+   Los esquemas vienen con fondo claro, así que en vez de forzarlos al
+   verde se presentan como una hoja puesta encima del fondo. */
+deck-stage .lamina{border-radius:20px;overflow:hidden;background:var(--crema);
+  border:1px solid var(--linea);box-shadow:0 26px 60px rgba(0,0,0,.38)}
+deck-stage .lamina img{display:block;width:100%;height:auto}
+deck-stage .pie{font-size:26px;line-height:1.4;color:var(--suave);margin-top:28px;max-width:70ch}
+
+/* Cifra mediana. La .cifra original (190 px) solo cabe sola; cuando hay
+   dos o tres datos en la misma diapositiva se usa esta. */
+deck-stage .ng b{display:block;font-size:118px;font-weight:800;line-height:.94;
+  letter-spacing:-.04em;color:var(--lima)}
+deck-stage .ng.coral b{color:var(--coral)}
+deck-stage .ng span{display:block;font-size:28px;line-height:1.42;color:var(--suave);margin-top:18px}
+deck-stage .cifras{display:grid;gap:44px;margin-top:46px}
+deck-stage .cifras.tres{grid-template-columns:repeat(3,1fr)}
+deck-stage .cifras.dos{grid-template-columns:repeat(2,1fr);gap:90px}
+
+deck-stage .fila{display:flex;align-items:center;gap:52px}
+deck-stage .flecha{font-size:86px;line-height:1;color:var(--lima);flex:none}
+
+/* Numeración de la agenda y de las tareas. */
+deck-stage .lista.num li i{width:auto;height:auto;border-radius:0;background:none;
+  margin-top:2px;min-width:44px;font-size:34px;font-weight:800;color:var(--lima)}
+
+/* Los siete principios en una sola pantalla. */
+deck-stage .siete{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:42px}
+deck-stage .siete .tarjeta{padding:26px 24px}
+deck-stage .siete .tarjeta em{display:block;font-family:'Fraunces',Georgia,serif;
+  font-style:italic;font-size:34px;color:var(--lima);line-height:1;margin-bottom:10px}
+deck-stage .siete .tarjeta b{font-size:32px;margin-bottom:8px;color:var(--crema)}
+deck-stage .siete .tarjeta span{font-size:24px;line-height:1.35}
+deck-stage .siete .nota{padding:26px 24px;font-size:24px;line-height:1.4;color:var(--suave);
+  display:flex;align-items:center}
+
+/* Tabla de dos columnas: pilar ← principios. */
+deck-stage .tabla{margin-top:40px;border-top:1px solid var(--linea)}
+deck-stage .tabla>div{display:grid;grid-template-columns:1.3fr 1fr;gap:50px;
+  padding:22px 4px;border-bottom:1px solid var(--linea);font-size:32px;line-height:1.3}
+deck-stage .tabla>div>span:last-child{color:var(--lima)}
+deck-stage .tabla>div.enc{font-size:22px;font-weight:800;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(246,244,234,.42);padding-bottom:14px}
+deck-stage .tabla>div.enc>span:last-child{color:rgba(246,244,234,.42)}
+
+/* Las palabras sueltas del recuento. */
+deck-stage .chips{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:46px}
+deck-stage .chip{font-size:28px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--suave);border:1px solid var(--linea);border-radius:999px;padding:12px 28px}
+
+deck-stage .dos-col{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:44px}
+deck-stage .dos-col.izq-corta{grid-template-columns:.8fr 1.2fr}
+deck-stage .rotulo{font-size:26px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--lima);margin-bottom:20px}
+deck-stage .rotulo.coral{color:var(--coral)}
+
+/* La diapositiva de la promesa va en coral a sangre: es la única. */
+deck-stage section.coral-full{background:var(--coral)}
+deck-stage section.coral-full .lead,
+deck-stage section.coral-full .dato{color:rgba(255,255,255,.88)}
+
+/* La semana en curso dentro del calendario. */
+deck-stage .tarjeta.viva{background:var(--coral);border-color:var(--coral)}
+deck-stage .tarjeta.viva b,
+deck-stage .tarjeta.viva span{color:#fff}
