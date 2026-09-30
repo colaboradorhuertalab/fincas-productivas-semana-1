@@ -6,6 +6,40 @@
 <title>Fincas Productivas · Semana 1 · El bosque como modelo</title>
 <meta name="description" content="Los 7 principios de inmunidad del bosque, llevados al diseño de tu finca. La Huerta LAB.">
 <link rel="stylesheet" href="assets/deck.css">
+
+<!-- Estilos del Botón Fullscreen -->
+<style>
+  .btn-fullscreen {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: rgba(8, 46, 39, 0.85);
+    color: #C9DE3F;
+    border: 1px solid rgba(201, 222, 63, 0.4);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    backdrop-filter: blur(4px);
+    outline: none;
+  }
+
+  .btn-fullscreen:hover {
+    transform: scale(1.1);
+    background: rgba(8, 46, 39, 1);
+    border-color: #C9DE3F;
+  }
+
+  .btn-fullscreen:active {
+    transform: scale(0.95);
+  }
+</style>
 </head>
 <body>
 
@@ -915,6 +949,15 @@
 
 </deck-stage>
 
+<!-- Botón flotante para Pantalla Completa -->
+<button id="btn-fullscreen" class="btn-fullscreen" aria-label="Pantalla completa" title="Pantalla completa">
+  <svg id="icon-expand" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+  </svg>
+  <svg id="icon-compress" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+    <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+  </svg>
+</button>
 
 <script type="application/json" id="speaker-notes">
 [
@@ -966,5 +1009,42 @@
 
 <script src="assets/deck.js"></script>
 
+<!-- Script para la funcionalidad de Pantalla Completa -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    const iconExpand = document.getElementById('icon-expand');
+    const iconCompress = document.getElementById('icon-compress');
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error(`Error al intentar activar pantalla completa: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    function updateIcons() {
+      if (document.fullscreenElement) {
+        iconExpand.style.display = 'none';
+        iconCompress.style.display = 'block';
+        btnFullscreen.setAttribute('title', 'Salir de pantalla completa');
+        btnFullscreen.setAttribute('aria-label', 'Salir de pantalla completa');
+      } else {
+        iconExpand.style.display = 'block';
+        iconCompress.style.display = 'none';
+        btnFullscreen.setAttribute('title', 'Pantalla completa');
+        btnFullscreen.setAttribute('aria-label', 'Pantalla completa');
+      }
+    }
+
+    btnFullscreen.addEventListener('click', toggleFullscreen);
+    document.addEventListener('fullscreenchange', updateIcons);
+  });
+</script>
 </body>
 </html>
