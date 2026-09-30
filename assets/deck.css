@@ -253,3 +253,36 @@ deck-stage section.coral-full .dato{color:rgba(255,255,255,.88)}
 deck-stage .tarjeta.viva{background:var(--coral);border-color:var(--coral)}
 deck-stage .tarjeta.viva b,
 deck-stage .tarjeta.viva span{color:#fff}
+
+<style>
+  .btn-fullscreen {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: rgba(8, 46, 39, 0.85); /* Tono verdoso oscuro alineado con la paleta */
+    color: #C9DE3F;                   /* Tono lima alineado con tus detalles */
+    border: 1px solid rgba(201, 222, 63, 0.4);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    backdrop-filter: blur(4px);
+    outline: none;
+  }
+
+  .btn-fullscreen:hover {
+    transform: scale(1.1);
+    background: rgba(8, 46, 39, 1);
+    border-color: #C9DE3F;
+  }
+
+  .btn-fullscreen:active {
+    transform: scale(0.95);
+  }
+</style>
