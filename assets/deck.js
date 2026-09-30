@@ -663,42 +663,7 @@
     prev() { this._go(this._index - 1, 'api'); }
     reset() { this._go(0, 'api'); }
   }
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const btnFullscreen = document.getElementById('btn-fullscreen');
-    const iconExpand = document.getElementById('icon-expand');
-    const iconCompress = document.getElementById('icon-compress');
 
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-          console.error(`Error al intentar activar pantalla completa: ${err.message}`);
-        });
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
-      }
-    }
-
-    function updateIcons() {
-      if (document.fullscreenElement) {
-        iconExpand.style.display = 'none';
-        iconCompress.style.display = 'block';
-        btnFullscreen.setAttribute('title', 'Salir de pantalla completa');
-        btnFullscreen.setAttribute('aria-label', 'Salir de pantalla completa');
-      } else {
-        iconExpand.style.display = 'block';
-        iconCompress.style.display = 'none';
-        btnFullscreen.setAttribute('title', 'Pantalla completa');
-        btnFullscreen.setAttribute('aria-label', 'Pantalla completa');
-      }
-    }
-
-    btnFullscreen.addEventListener('click', toggleFullscreen);
-    document.addEventListener('fullscreenchange', updateIcons);
-  });
-</script>
   if (!customElements.get('deck-stage')) {
     customElements.define('deck-stage', DeckStage);
   }
